@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 74abf9c9f5eadc246ac3baa39172227a, type: 3}
-  m_Name: SuperPotion
+  m_Name: BreadRecipe
   m_EditorClassIdentifier: 
   Components:
-  - {fileID: 11400000, guid: 634fe5f63e5263b479708f38aa20273a, type: 2}
+  - {fileID: 11400000, guid: 650a7bc9789110c4292db55071350eea, type: 2}
   - {fileID: 0}
-  - {fileID: 11400000, guid: 634fe5f63e5263b479708f38aa20273a, type: 2}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 11400000, guid: 1942dd3f1a9f71d47bcb2abb1de7bd99, type: 2}
+  - {fileID: 0}
   - {fileID: 0}
   - {fileID: 11400000, guid: c9ccddaac82482c4685014b7d437142b, type: 2}
   - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  Output: {fileID: 11400000, guid: f0fd6b2a2344d92419ff24d402f074ab, type: 2}
+  Output: {fileID: 11400000, guid: 274b1e673cd30f142bf9cfe18a6d0cf7, type: 2}

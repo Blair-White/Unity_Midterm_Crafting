@@ -11854,7 +11854,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 16857277, guid: ecb0877a918e45645a1511232e0f3a42, type: 3}
       propertyPath: StartingItemQuantities.Array.data[1]
-      value: 12
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 16857277, guid: ecb0877a918e45645a1511232e0f3a42, type: 3}
       propertyPath: StartingItemQuantities.Array.data[2]
@@ -11871,7 +11871,7 @@ PrefabInstance:
     - target: {fileID: 16857277, guid: ecb0877a918e45645a1511232e0f3a42, type: 3}
       propertyPath: startingItems.Array.data[3]
       value: 
-      objectReference: {fileID: 11400000, guid: 1cb0a04669b996e41aadf11083d5b817, type: 2}
+      objectReference: {fileID: 11400000, guid: 650a7bc9789110c4292db55071350eea, type: 2}
     - target: {fileID: 16857277, guid: ecb0877a918e45645a1511232e0f3a42, type: 3}
       propertyPath: startingItems.Array.data[4]
       value: 
@@ -11879,18 +11879,18 @@ PrefabInstance:
     - target: {fileID: 16857277, guid: ecb0877a918e45645a1511232e0f3a42, type: 3}
       propertyPath: startingItems.Array.data[5]
       value: 
-      objectReference: {fileID: 11400000, guid: c9ccddaac82482c4685014b7d437142b, type: 2}
+      objectReference: {fileID: 11400000, guid: ff2f3ff81d746954681113c341dc9cd7, type: 2}
     - target: {fileID: 16857277, guid: ecb0877a918e45645a1511232e0f3a42, type: 3}
       propertyPath: startingItems.Array.data[6]
       value: 
-      objectReference: {fileID: 11400000, guid: 634fe5f63e5263b479708f38aa20273a, type: 2}
+      objectReference: {fileID: 11400000, guid: c9ccddaac82482c4685014b7d437142b, type: 2}
     - target: {fileID: 16857277, guid: ecb0877a918e45645a1511232e0f3a42, type: 3}
       propertyPath: StartingItemQuantities.Array.data[3]
       value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 16857277, guid: ecb0877a918e45645a1511232e0f3a42, type: 3}
       propertyPath: StartingItemQuantities.Array.data[4]
-      value: 19
+      value: 44
       objectReference: {fileID: 0}
     - target: {fileID: 16857277, guid: ecb0877a918e45645a1511232e0f3a42, type: 3}
       propertyPath: StartingItemQuantities.Array.data[5]
@@ -11900,6 +11900,18 @@ PrefabInstance:
       propertyPath: StartingItemQuantities.Array.data[6]
       value: 42
       objectReference: {fileID: 0}
+    - target: {fileID: 16857277, guid: ecb0877a918e45645a1511232e0f3a42, type: 3}
+      propertyPath: startingItems.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: 1cb0a04669b996e41aadf11083d5b817, type: 2}
+    - target: {fileID: 16857277, guid: ecb0877a918e45645a1511232e0f3a42, type: 3}
+      propertyPath: startingItems.Array.data[2]
+      value: 
+      objectReference: {fileID: 11400000, guid: 2fdbc09ebc3bbb04c83ca08367353851, type: 2}
+    - target: {fileID: 16857277, guid: ecb0877a918e45645a1511232e0f3a42, type: 3}
+      propertyPath: startingItems.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: 634fe5f63e5263b479708f38aa20273a, type: 2}
     - target: {fileID: 831955046, guid: ecb0877a918e45645a1511232e0f3a42, type: 3}
       propertyPath: m_Name
       value: PlayerInventoryCanvases
