@@ -6,12 +6,18 @@ using UnityEngine.Events;
 
 public class ItemSlot : MonoBehaviour
 {
+    private GameObject mPlayer;
+    private Sprite defaultSprite;
     // Event callbacks
     public UnityEvent<Item> onItemUse;
 
     // flag to tell ItemSlot it needs to update itself after being changed
     private bool b_needsUpdate = true;
 
+    // [HideInInspector]
+    public bool isCraftingSlot;
+    // [HideInInspector]
+    public bool isOutputSlot;
     // Declared with auto-property
     public Item ItemInSlot { get; private set; }
     public int ItemCount { get; private set; }
@@ -24,6 +30,12 @@ public class ItemSlot : MonoBehaviour
     [SerializeField]
     private Image itemIcon;
 
+
+    private void Start()
+    {
+        defaultSprite = this.GetComponent<Image>().sprite;
+        mPlayer = GameObject.Find("PlayerCharacter");
+    }
     private void Update()
     {
         if(b_needsUpdate)
@@ -89,7 +101,34 @@ public class ItemSlot : MonoBehaviour
     /// </summary>
     public void UseItem()
     {
-        if(ItemInSlot != null)
+        if (ItemInSlot == null)
+        {
+            if(!isOutputSlot)
+            if(mPlayer.GetComponent<PickupItem>().isGrabbing == true)
+            {
+                SetContents(mPlayer.GetComponent<Inventory>().masterItemTable.GetItem(mPlayer.GetComponent<PickupItem>().ItemType), 1);
+                mPlayer.GetComponent<PickupItem>().isGrabbing = false;
+                Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
+                ItemCount = 1;
+                b_needsUpdate = true;
+                if(mPlayer.GetComponent<PickupItem>().isGrabbingOutput)
+                {
+                        GameObject[] g = GameObject.FindGameObjectsWithTag("CraftingSlot");
+                        foreach (var item in g)
+                        {
+                            item.SendMessage("ClearSlot");
+                        }
+                        mPlayer.GetComponent<PickupItem>().isGrabbingOutput = false;
+                }
+                    
+                CheckCrafting();
+                return;
+            }
+
+                          
+        }
+
+        if (ItemInSlot != null)
         {
             if(ItemCount >= 1)
             {
@@ -97,6 +136,7 @@ public class ItemSlot : MonoBehaviour
                 onItemUse.Invoke(ItemInSlot);
                 ItemCount--;
                 b_needsUpdate = true;
+                
             }
         }
     }
@@ -109,6 +149,7 @@ public class ItemSlot : MonoBehaviour
         if(ItemCount == 0)
         {
             ItemInSlot = null;
+            itemCountText.text = " ";
         }
 
       if(ItemInSlot != null)
@@ -116,11 +157,28 @@ public class ItemSlot : MonoBehaviour
             itemCountText.text = ItemCount.ToString();
             itemIcon.sprite = ItemInSlot.Icon;
             itemIcon.gameObject.SetActive(true);
+            if (ItemCount == 0) itemCountText.text = "";
         } else
         {
-            itemIcon.gameObject.SetActive(false);
+            itemIcon.gameObject.GetComponent<Image>().sprite = defaultSprite;
+            ItemCount = 0;
+            itemCountText.text = "";
+            //itemIcon.gameObject.SetActive(false);
         }
 
         b_needsUpdate = false;
     }
+
+    public void CheckCrafting()
+    {
+       GameObject g = GameObject.FindGameObjectWithTag("OutPutSlot");
+       g.SendMessage("CheckRecipes"); 
+    }
+
+    public void CheckRecipes()
+    {
+        mPlayer.SendMessage("CheckCraftingTable");
+    }
+
+ 
 }

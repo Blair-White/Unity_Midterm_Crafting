@@ -6,9 +6,20 @@ using System.Linq; // For finding all gameObjects with name
 
 public class Inventory : MonoBehaviour, ISaveHandler
 {
+    [Tooltip("Whether or not this is a crafting Table")]
+    [SerializeField]
+    public bool isCraftingTable;
+
+    [Tooltip("is this inventory an Output Box?")]
+    public bool isOutputBox;
+
+    [Tooltip("Drag Output Box ItemSlot here")]
+    [SerializeField]
+    private ItemSlot OutputSlot;
+
     [Tooltip("Reference to the master item table")]
     [SerializeField]
-    private ItemTable masterItemTable;
+    public ItemTable masterItemTable;
 
     [Tooltip("The object which will hold Item Slots as its direct children")]
     [SerializeField]
@@ -22,6 +33,13 @@ public class Inventory : MonoBehaviour, ISaveHandler
     [SerializeField]
     private List<Item> startingItems;
 
+    [Tooltip("Starting amount for corresponding Starting Item")]
+    [SerializeField]
+    private int[] StartingItemQuantities;
+
+    [SerializeField]
+    private RecipeTable MasterRecipeTable;
+    private bool[] CorrectCraftingComponents = {false, false, false, false, false, false, false, false, false};
     /// <summary>
     /// Private key used for saving with playerprefs
     /// </summary>
@@ -30,13 +48,14 @@ public class Inventory : MonoBehaviour, ISaveHandler
     // Start is called before the first frame update
     void Start()
     {
+       
         InitItemSlots();
         InitSaveInfo();
 
         // init starting items for testing
         for (int i = 0; i < startingItems.Count && i < itemSlots.Count; i++)
         {
-            itemSlots[i].SetContents(startingItems[i], 16);
+            itemSlots[i].SetContents(startingItems[i], StartingItemQuantities[i]);
         }
     }
 
@@ -51,6 +70,10 @@ public class Inventory : MonoBehaviour, ISaveHandler
             GameObject newObject = Instantiate(itemSlots[0].gameObject, inventoryPanel.transform);
             ItemSlot newSlot = newObject.GetComponent<ItemSlot>();
             itemSlots[i] = newSlot;
+            if (isCraftingTable)
+                itemSlots[i].isCraftingSlot = true;
+            if (isOutputBox)
+                itemSlots[i].isOutputSlot = true;
         }
 
         foreach (ItemSlot item in itemSlots)
@@ -92,7 +115,11 @@ public class Inventory : MonoBehaviour, ISaveHandler
 
     void OnItemUsed(Item itemUsed)
     {
-       // Debug.Log("Inventory: item used of category " + itemUsed.category);
+        // Debug.Log("Inventory: item used of category " + itemUsed.category);
+        Cursor.SetCursor(itemUsed.Icon.texture, Vector2.zero, CursorMode.Auto);
+        this.SendMessage("PickedUpItem", itemUsed.ItemID);
+        if (this.isOutputBox) { this.SendMessage("PickedUpOutput"); Debug.Log("Grabbed Output"); }
+        
     }
 
     public void OnSave()
@@ -155,5 +182,66 @@ public class Inventory : MonoBehaviour, ISaveHandler
                 itemSlots[i].SetContents(masterItemTable.GetItem(id), count);
             }
         }
+    }
+
+    public void CheckCraftingTable()
+    {
+        if (isCraftingTable)
+        {
+            for(int i = 0; i < MasterRecipeTable.RecipeList.Length; i++)
+            {
+                for (int j = 0; j < MasterRecipeTable.RecipeList[i].Components.Length; j++)
+                {
+                    for (int k = 0; k < itemSlots.Count; j++)
+                    {
+                        if (MasterRecipeTable.RecipeList[i].Components[k] != itemSlots[k].ItemInSlot)
+                        {
+                            CorrectCraftingComponents[k] = false;
+                        }
+                        if (MasterRecipeTable.RecipeList[i].Components[k] == itemSlots[k].ItemInSlot)
+                        {
+                            CorrectCraftingComponents[k] = true;
+                        }
+                    }
+                }
+            }
+            //Debug.Log("Checked Crafting Table");
+            //for (int i = 0; i < MyRecipes.Count; i++)
+            //{
+            //    for(int j = 0; j < itemSlots.Count; j++)
+            //    {
+            //        if(MyRecipes[i].Components[j] != itemSlots[j].ItemInSlot)
+            //        {
+            //            CorrectCraftingComponents[j] = false;
+            //        }
+            //        if(MyRecipes[i].Components[j] == itemSlots[j].ItemInSlot)
+            //        {
+            //            CorrectCraftingComponents[j] = true;
+            //            Debug.Log("Correct Component in slot");
+            //        }
+                    
+            //    }
+
+            //    Debug.Log("Performed Recipe Check, each log == how many recipes");
+
+            //    if(FinalCraftingCheck() == true)
+            //    {
+            //        OutputSlot.SetContents(MyRecipes[i].Output, 1);
+            //        Debug.Log("Crafting Complete!");
+            //    }
+                
+            //}
+        }
+    }
+
+    private bool FinalCraftingCheck()
+    {
+        for(int i = 0; i < CorrectCraftingComponents.Length; i++)
+        {
+            if (CorrectCraftingComponents[i] == false)
+                return false;
+        }
+
+        return true;
     }
 }

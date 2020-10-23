@@ -6,6 +6,8 @@ TagManager:
   tags:
   - City
   - Overworld
+  - OutPutSlot
+  - CraftingSlot
   layers:
   - Default
   - TransparentFX
