@@ -39,7 +39,7 @@ public class Inventory : MonoBehaviour, ISaveHandler
 
     [SerializeField]
     private RecipeTable MasterRecipeTable;
-    private bool[] CorrectCraftingComponents = {false, false, false, false, false, false, false, false, false};
+    public bool[] CorrectCraftingComponents = {false, false, false, false, false, false, false, false, false};
     /// <summary>
     /// Private key used for saving with playerprefs
     /// </summary>
@@ -190,20 +190,26 @@ public class Inventory : MonoBehaviour, ISaveHandler
         {
             for(int i = 0; i < MasterRecipeTable.RecipeList.Length; i++)
             {
-                for (int j = 0; j < MasterRecipeTable.RecipeList[i].Components.Length; j++)
+                for (int j = 0; j < itemSlots.Count; j++)
                 {
-                    for (int k = 0; k < itemSlots.Count; j++)
+                    if (MasterRecipeTable.RecipeList[i].Components[j] != itemSlots[j].ItemInSlot)
                     {
-                        if (MasterRecipeTable.RecipeList[i].Components[k] != itemSlots[k].ItemInSlot)
-                        {
-                            CorrectCraftingComponents[k] = false;
-                        }
-                        if (MasterRecipeTable.RecipeList[i].Components[k] == itemSlots[k].ItemInSlot)
-                        {
-                            CorrectCraftingComponents[k] = true;
-                        }
+                        CorrectCraftingComponents[j] = false;
                     }
+                    if (MasterRecipeTable.RecipeList[i].Components[j] == itemSlots[j].ItemInSlot)
+                    {
+                        CorrectCraftingComponents[j] = true;
+                    }
+
                 }
+               Debug.Log("Performed Recipe Check, each log == how many recipes");
+
+                if (FinalCraftingCheck() == true)
+                {
+                    OutputSlot.SetContents(MasterRecipeTable.RecipeList[i].Output, 1);
+                    Debug.Log("Crafting Complete!");
+                }
+
             }
             //Debug.Log("Checked Crafting Table");
             //for (int i = 0; i < MyRecipes.Count; i++)
@@ -219,17 +225,11 @@ public class Inventory : MonoBehaviour, ISaveHandler
             //            CorrectCraftingComponents[j] = true;
             //            Debug.Log("Correct Component in slot");
             //        }
-                    
+
             //    }
 
-            //    Debug.Log("Performed Recipe Check, each log == how many recipes");
+            
 
-            //    if(FinalCraftingCheck() == true)
-            //    {
-            //        OutputSlot.SetContents(MyRecipes[i].Output, 1);
-            //        Debug.Log("Crafting Complete!");
-            //    }
-                
             //}
         }
     }
